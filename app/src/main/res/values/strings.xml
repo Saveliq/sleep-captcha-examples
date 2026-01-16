@@ -4,6 +4,13 @@
     <string name="done_button">Done</string>
     <string name="difficulty">Difficulty <xliff:g id="till">%s</xliff:g></string>
     <string name="captcha_math_label">Hard math CAPTCHA</string>
+    <string name="question_title">Задача</string>
+    <string name="answer_hint">Ответ (целое число)</string>
     <string name="check_answer">Проверить</string>
+    
+    <string name="err_enter_answer">Введи ответ</string>
+    <string name="err_integers_only">Только целые числа</string>
+    <string name="err_wrong_new">Неверно, новая задача</string>
+    <string name="ok_correct">Верно</string>
 
 </resources>
