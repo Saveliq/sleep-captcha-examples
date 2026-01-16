@@ -10,28 +10,20 @@
     >
 
         <activity
-            android:name=".ReverseCaptchaActivity"
-	        android:launchMode="singleTop"
-            android:label="@string/captcha_label"
-            android:exported="true"
-            >
+		    android:name=".HardMathCaptchaActivity"
+		    android:launchMode="singleTop"
+		    android:label="@string/captcha_math_label"
+		    android:exported="true">
+		
+		    <meta-data
+		        android:name="com.urbandroid.sleep.captcha.meta.has_difficulty"
+		        android:value="true" />
+		
+		    <intent-filter>
+		        <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
+		    </intent-filter>
+		</activity>
 
-            <!-- Should this Captcha have difficulty settings?-->
-            <meta-data android:name="com.urbandroid.sleep.captcha.meta.has_difficulty" android:value="true"/>
-
-            <intent-filter>
-                <!-- This filter is needed for the Captcha to work-->
-                <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN"/>
-
-                <!-- This filter allows Settings for CAPTCHA -->
-                <!--<action android:name="com.urbandroid.sleep.captcha.intent.action.CONFIG"/>-->
-
-                <!-- Uncomment for testing - captcha will show up in launcher as standalone app
-		        <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
-                 -->
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
