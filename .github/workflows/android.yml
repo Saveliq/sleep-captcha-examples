@@ -1,4 +1,4 @@
-name: Build Debug APK
+name: Build Debug APK (no wrapper)
 
 on:
   workflow_dispatch:
@@ -18,39 +18,17 @@ jobs:
         with:
           distribution: temurin
           java-version: "17"
-          cache: gradle
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Locate gradlew
-        id: locate
-        shell: bash
-        run: |
-          set -e
-          echo "Repo root:"
-          ls -la
-
-          WRAPPER="$(find . -maxdepth 5 -type f -name gradlew | head -n 1)"
-          if [ -z "$WRAPPER" ]; then
-            echo "ERROR: gradlew not found in repository (searched up to depth 5)." >&2
-            echo "Hint: you need to commit Gradle Wrapper files into the repo." >&2
-            exit 1
-          fi
-
-          WRAPPER_DIR="$(cd "$(dirname "$WRAPPER")" && pwd)"
-          echo "Found gradlew at: $WRAPPER"
-          echo "Wrapper dir: $WRAPPER_DIR"
-
-          echo "wrapper_path=$WRAPPER" >> "$GITHUB_OUTPUT"
-          echo "wrapper_dir=$WRAPPER_DIR" >> "$GITHUB_OUTPUT"
-
-      - name: Make gradlew executable
-        run: chmod +x "${{ steps.locate.outputs.wrapper_path }}"
+      - name: Setup Gradle (download & add to PATH)
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "current"
 
       - name: Build debug APK
-        working-directory: ${{ steps.locate.outputs.wrapper_dir }}
-        run: ./gradlew --no-daemon assembleDebug
+        run: gradle --no-daemon assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
