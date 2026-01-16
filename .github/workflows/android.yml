@@ -23,10 +23,33 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Locate gradlew
+        id: locate
+        shell: bash
+        run: |
+          set -e
+          echo "Repo root:"
+          ls -la
+
+          WRAPPER="$(find . -maxdepth 5 -type f -name gradlew | head -n 1)"
+          if [ -z "$WRAPPER" ]; then
+            echo "ERROR: gradlew not found in repository (searched up to depth 5)." >&2
+            echo "Hint: you need to commit Gradle Wrapper files into the repo." >&2
+            exit 1
+          fi
+
+          WRAPPER_DIR="$(cd "$(dirname "$WRAPPER")" && pwd)"
+          echo "Found gradlew at: $WRAPPER"
+          echo "Wrapper dir: $WRAPPER_DIR"
+
+          echo "wrapper_path=$WRAPPER" >> "$GITHUB_OUTPUT"
+          echo "wrapper_dir=$WRAPPER_DIR" >> "$GITHUB_OUTPUT"
+
       - name: Make gradlew executable
-        run: chmod +x ./gradlew
+        run: chmod +x "${{ steps.locate.outputs.wrapper_path }}"
 
       - name: Build debug APK
+        working-directory: ${{ steps.locate.outputs.wrapper_dir }}
         run: ./gradlew --no-daemon assembleDebug
 
       - name: Upload APK artifact
