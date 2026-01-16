@@ -3,4 +3,7 @@
     <string name="captcha_label">@string/app_name</string>
     <string name="done_button">Done</string>
     <string name="difficulty">Difficulty <xliff:g id="till">%s</xliff:g></string>
+    <string name="captcha_math_label">Hard math CAPTCHA</string>
+    <string name="check_answer">Проверить</string>
+
 </resources>
