@@ -1,4 +1,4 @@
-name: Build Debug APK (no wrapper)
+name: Build Debug APK (single file)
 
 on:
   workflow_dispatch:
@@ -13,19 +13,109 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java 11
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "11"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Setup Gradle (download & add to PATH)
+      - name: Setup Gradle 7.6.4
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "current"
+          gradle-version: "7.6.4"
+
+      - name: Patch Gradle files (remove jcenter, modern AGP)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # settings.gradle
+          cat > settings.gradle <<'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+
+          rootProject.name = "sleep-captcha-examples"
+          include(":app")
+          EOF
+
+          # root build.gradle
+          cat > build.gradle <<'EOF'
+          plugins {
+              id "com.android.application" version "7.4.2" apply false
+          }
+          EOF
+
+          # gradle.properties
+          cat > gradle.properties <<'EOF'
+          org.gradle.jvmargs=-Xmx2g -Dfile.encoding=UTF-8
+          android.useAndroidX=true
+          android.enableJetifier=true
+          EOF
+
+          # app/build.gradle
+          mkdir -p app
+          cat > app/build.gradle <<'EOF'
+          plugins {
+              id "com.android.application"
+          }
+
+          android {
+              namespace "com.urbandroid.sleep.captcha.examples"
+              compileSdk 34
+
+              defaultConfig {
+                  applicationId "com.urbandroid.sleep.captcha.examples"
+                  minSdk 21
+                  targetSdk 34
+                  versionCode 1
+                  versionName "1.0"
+              }
+
+              buildTypes {
+                  debug {
+                      minifyEnabled false
+                  }
+                  release {
+                      minifyEnabled false
+                      proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                  }
+              }
+
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_1_8
+                  targetCompatibility JavaVersion.VERSION_1_8
+              }
+          }
+
+          dependencies {
+              implementation "com.urbandroid.sleep:captcha-support:0.3.3"
+          }
+          EOF
+
+          echo "Patched files:"
+          ls -la
+          echo "--- settings.gradle ---"
+          sed -n '1,200p' settings.gradle
+          echo "--- build.gradle ---"
+          sed -n '1,200p' build.gradle
+          echo "--- app/build.gradle ---"
+          sed -n '1,250p' app/build.gradle
 
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug
@@ -34,6 +124,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
+          if-no-files-found: error
           path: |
             **/build/outputs/apk/**/debug/*.apk
             **/build/outputs/apk/debug/*.apk
