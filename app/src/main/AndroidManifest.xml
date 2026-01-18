@@ -18,10 +18,11 @@
                 android:name="com.urbandroid.sleep.captcha.meta.has_difficulty"
                 android:value="true" />
 
+            <!-- ВАЖНО: как в оригинальной библиотеке — только action OPEN -->
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
         </activity>
 
         <!-- REVERSE CAPTCHA -->
@@ -37,8 +38,8 @@
 
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
-                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
         </activity>
 
     </application>
