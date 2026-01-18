@@ -1,4 +1,4 @@
-name: Build Debug APK (FINAL WORKING)
+name: Build Debug APK (FINAL AndroidX patch)
 
 on:
   workflow_dispatch:
@@ -29,12 +29,20 @@ jobs:
         with:
           gradle-version: "7.6.4"
 
-      - name: Clone + Patch + Build
+      - name: Clone library
         shell: bash
         run: |
           set -euo pipefail
-          git clone https://github.com/urbandroid-team/sleep-captcha-support.git captcha-lib-src
+          git clone --depth 1 https://github.com/urbandroid-team/sleep-captcha-support.git captcha-lib-src
 
+      - name: Patch project + build
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # --------------------
+          # Gradle settings
+          # --------------------
           cat > settings.gradle <<'EOF'
           pluginManagement {
               repositories {
@@ -43,6 +51,7 @@ jobs:
                   gradlePluginPortal()
               }
           }
+
           dependencyResolutionManagement {
               repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
               repositories {
@@ -50,6 +59,7 @@ jobs:
                   mavenCentral()
               }
           }
+
           rootProject.name = "sleep-captcha-examples"
           include(":app")
           include(":captcha-support-lib")
@@ -68,14 +78,19 @@ jobs:
           android.enableJetifier=true
           EOF
 
+          # --------------------
+          # App module
+          # --------------------
           mkdir -p app
           cat > app/build.gradle <<'EOF'
           plugins {
               id "com.android.application"
           }
+
           android {
               namespace "com.urbandroid.sleep.captcha.examples"
               compileSdk 33
+
               defaultConfig {
                   applicationId "com.urbandroid.sleep.captcha.examples"
                   minSdk 21
@@ -83,48 +98,89 @@ jobs:
                   versionCode 1
                   versionName "1.0"
               }
+
               buildTypes {
                   debug { minifyEnabled false }
-                  release { minifyEnabled false; proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro" }
+                  release {
+                      minifyEnabled false
+                      proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+                  }
               }
+
               compileOptions {
                   sourceCompatibility JavaVersion.VERSION_1_8
                   targetCompatibility JavaVersion.VERSION_1_8
               }
           }
+
           dependencies {
               implementation project(":captcha-support-lib")
-              implementation "com.android.support:support-annotations:28.0.0"
           }
           EOF
 
+          # --------------------
+          # Local library module
+          # --------------------
           mkdir -p captcha-support-lib/src/main
           cat > captcha-support-lib/build.gradle <<'EOF'
           plugins {
               id "com.android.library"
           }
+
           android {
               namespace "com.urbandroid.sleep.captcha"
               compileSdk 33
+
               defaultConfig {
                   minSdk 14
                   targetSdk 30
               }
+
               compileOptions {
                   sourceCompatibility JavaVersion.VERSION_1_8
                   targetCompatibility JavaVersion.VERSION_1_8
               }
           }
+
           dependencies {
-              api "com.android.support:support-annotations:28.0.0"
+              // AndroidX annotations replacement for old android.support.annotation.*
+              api "androidx.annotation:annotation:1.9.1"
           }
           EOF
 
-          SRC_MAIN="$(find captcha-lib-src -type d -name main | head -n 1)"
-          cp -R "$SRC_MAIN"/* captcha-support-lib/src/main/
+          # --------------------
+          # Copy upstream src/main into module
+          # --------------------
+          SRC_JAVA_FILE="$(find captcha-lib-src -type f -name 'CaptchaSupport.java' | head -n 1 || true)"
+          if [ -z "$SRC_JAVA_FILE" ]; then
+            echo "ERROR: CaptchaSupport.java not found in cloned library" >&2
+            exit 1
+          fi
 
-      - name: Build debug APK
-        run: gradle --no-daemon assembleDebug
+          SRC_MAIN_DIR="$(echo "$SRC_JAVA_FILE" | sed 's|\(.*\/src\/main\).*|\1|')"
+          if [ ! -d "$SRC_MAIN_DIR" ]; then
+            echo "ERROR: computed src/main dir not found: $SRC_MAIN_DIR" >&2
+            exit 1
+          fi
+
+          cp -R "$SRC_MAIN_DIR"/* captcha-support-lib/src/main/
+
+          # --------------------
+          # AndroidX migrate: replace imports
+          # --------------------
+          if [ -d "captcha-support-lib/src/main/java" ]; then
+            FILES="$(grep -RIl --include='*.java' 'android\.support\.annotation' captcha-support-lib/src/main/java || true)"
+            if [ -n "$FILES" ]; then
+              echo "$FILES" | while read -r f; do
+                sed -i 's/android\.support\.annotation/androidx.annotation/g' "$f"
+              done
+            fi
+          fi
+
+          # --------------------
+          # Build
+          # --------------------
+          gradle --no-daemon assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
