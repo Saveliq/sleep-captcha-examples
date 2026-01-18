@@ -1,170 +1,515 @@
-name: Build Debug APK (final + support-annotations)
+Run gradle --no-daemon assembleDebug
+To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.6.4/userguide/gradle_daemon.html#sec:disabling_the_daemon.
+Daemon will be stopped at the end of the build 
+This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+Checking the license for package Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Build-Tools 30.0.3 accepted.
+Preparing "Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)".
+"Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" ready.
+Installing Android SDK Build-Tools 30.0.3 in /usr/local/lib/android/sdk/build-tools/30.0.3
+"Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" complete.
+"Install Android SDK Build-Tools 30.0.3 (revision: 30.0.3)" finished.
+Checking the license for package Android SDK Platform 33 in /usr/local/lib/android/sdk/licenses
+License for package Android SDK Platform 33 accepted.
+Preparing "Install Android SDK Platform 33 (revision: 3)".
+"Install Android SDK Platform 33 (revision: 3)" ready.
+Installing Android SDK Platform 33 in /usr/local/lib/android/sdk/platforms/android-33
+"Install Android SDK Platform 33 (revision: 3)" complete.
+"Install Android SDK Platform 33 (revision: 3)" finished.
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :captcha-support-lib:preBuild UP-TO-DATE
+> Task :captcha-support-lib:preDebugBuild UP-TO-DATE
+> Task :captcha-support-lib:compileDebugAidl NO-SOURCE
+> Task :app:compileDebugAidl NO-SOURCE
+> Task :captcha-support-lib:packageDebugRenderscript NO-SOURCE
+> Task :app:compileDebugRenderscript NO-SOURCE
+> Task :app:generateDebugBuildConfig
+> Task :app:javaPreCompileDebug
+> Task :app:generateDebugResValues
+> Task :captcha-support-lib:compileDebugRenderscript NO-SOURCE
+> Task :captcha-support-lib:writeDebugAarMetadata
+> Task :captcha-support-lib:generateDebugResValues
+> Task :captcha-support-lib:generateDebugResources
+> Task :app:checkDebugAarMetadata
+> Task :captcha-support-lib:packageDebugResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :captcha-support-lib:extractDeepLinksDebug
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [ "main", "master" ]
+> Task :app:mergeDebugResources
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/app/src/main/res/values/strings.xml:3:4: Ignoring element '{http://schemas.android.com/tools}g' with unknown namespace 'http://schemas.android.com/tools'.
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+> Task :captcha-support-lib:compileDebugLibraryResources
+> Task :captcha-support-lib:generateDebugBuildConfig
+> Task :captcha-support-lib:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :captcha-support-lib:parseDebugLocalResources
+> Task :captcha-support-lib:mergeDebugShaders
+> Task :captcha-support-lib:compileDebugShaders NO-SOURCE
+> Task :captcha-support-lib:generateDebugAssets UP-TO-DATE
+> Task :captcha-support-lib:packageDebugAssets
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :captcha-support-lib:processDebugJavaRes NO-SOURCE
+> Task :captcha-support-lib:bundleLibResDebug NO-SOURCE
+> Task :app:checkDebugDuplicateClasses
+> Task :app:mergeDebugJavaResource
 
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+> Task :captcha-support-lib:processDebugManifest
+package="com.urbandroid.sleep.captcha" found in source AndroidManifest.xml: /home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/AndroidManifest.xml.
+Setting the namespace via a source AndroidManifest.xml's package attribute is deprecated.
+Please instead set the namespace (or testNamespace) in the module's build.gradle file, as described here: https://developer.android.com/studio/build/configure-app-module#set-namespace
+This migration can be done automatically using the AGP Upgrade Assistant, please refer to https://developer.android.com/studio/build/agp-upgrade-assistant for more information.
 
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
+> Task :app:desugarDebugFileDependencies
 
-      - name: Setup Android SDK (accept licenses)
-        uses: android-actions/setup-android@v3
-        with:
-          accept-android-sdk-licenses: true
+> Task :app:processDebugMainManifest
+package="com.urbandroid.sleep.captcha.example" found in source AndroidManifest.xml: /home/runner/work/sleep-captcha-examples/sleep-captcha-examples/app/src/main/AndroidManifest.xml.
+Setting the namespace via a source AndroidManifest.xml's package attribute is deprecated.
+Please instead set the namespace (or testNamespace) in the module's build.gradle file, as described here: https://developer.android.com/studio/build/configure-app-module#set-namespace
+This migration can be done automatically using the AGP Upgrade Assistant, please refer to https://developer.android.com/studio/build/agp-upgrade-assistant for more information.
 
-      - name: Setup Gradle 7.6.4
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: "7.6.4"
+> Task :app:processDebugManifest
+> Task :captcha-support-lib:generateDebugRFile
+> Task :app:mergeExtDexDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/GenericCaptchaActivity.java:7: error: package android.support.annotation does not exist
+import android.support.annotation.CallSuper;
 
-      - name: Clone sleep-captcha-support sources
-        shell: bash
-        run: |
-          set -euo pipefail
-          git clone https://github.com/urbandroid-team/sleep-captcha-support.git captcha-lib-src
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupport.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.IntRange;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupport.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+> Task :captcha-support-lib:compileDebugJavaWithJavac
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/intent/IntentExtraSetter.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/CaptchaLauncher.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/intent/CallbackIntentCreator.java:5: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaInfo.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaInfo.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaInfoFilter.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaGroup.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/BaseCaptchaSupport.java:5: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/BaseCaptchaSupport.java:6: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:16: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:17: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/FallbackPreviewCaptchaSupport.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupportFactory.java:5: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupportFactory.java:6: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/BaseCaptchaLauncher.java:5: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/BaseCaptchaLauncher.java:6: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/CaptchaEvent.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.StringDef;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/CaptchaEvent.java:18: error: cannot find symbol
+@StringDef({
+ ^
+  symbol: class StringDef
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/SleepOperation.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.StringDef;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/SleepOperation.java:22: error: cannot find symbol
+@StringDef({
+ ^
+  symbol: class StringDef
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/CaptchaMode.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.IntDef;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/CaptchaMode.java:18: error: cannot find symbol
+@IntDef({
+ ^
+  symbol: class IntDef
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/CaptchaDifficulty.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.IntDef;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/CaptchaDifficulty.java:20: error: cannot find symbol
+@IntDef({
+ ^
+  symbol: class IntDef
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/SuppressAlarmMode.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.IntDef;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/annotation/SuppressAlarmMode.java:8: error: cannot find symbol
+@IntDef({
+ ^
+  symbol: class IntDef
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/FallbackCaptchaFinder.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/FallbackCaptchaFinder.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/NotCaptchaInfoFilter.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/NotCaptchaInfoFilter.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/OrCaptchaInfoFilter.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/OrCaptchaInfoFilter.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/PackageCaptchaInfoFilter.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/PackageCaptchaInfoFilter.java:5: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/IdCaptchaInfoFilter.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/AndCaptchaInfoFilter.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/filter/AndCaptchaInfoFilter.java:4: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/BaseCaptchaFinder.java:8: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/BaseCaptchaFinder.java:9: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/BaseCaptchaInfo.java:5: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/BaseCaptchaInfo.java:6: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CachedCaptchaFinder.java:8: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/BaseCaptchaGroup.java:3: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/util/IntentUtil.java:5: error: package android.support.annotation does not exist
+import android.support.annotation.NonNull;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/util/IntentUtil.java:6: error: package android.support.annotation does not exist
+import android.support.annotation.Nullable;
+                                 ^
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/GenericCaptchaActivity.java:14: error: cannot find symbol
+    @CallSuper
+     ^
+  symbol:   class CallSuper
+  location: class GenericCaptchaActivity
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/GenericCaptchaActivity.java:21: error: cannot find symbol
+    @CallSuper
+     ^
+  symbol:   class CallSuper
+  location: class GenericCaptchaActivity
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/GenericCaptchaActivity.java:28: error: cannot find symbol
+    @CallSuper
+     ^
+  symbol:   class CallSuper
+  location: class GenericCaptchaActivity
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/GenericCaptchaActivity.java:35: error: cannot find symbol
+    @CallSuper
+     ^
+  symbol:   class CallSuper
+  location: class GenericCaptchaActivity
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/GenericCaptchaActivity.java:42: error: cannot find symbol
+    @CallSuper
+     ^
+  symbol:   class CallSuper
+  location: class GenericCaptchaActivity
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupport.java:21: error: cannot find symbol
+    CaptchaSupport setRemainingTimeListener(@Nullable RemainingTimeListener remainingTimeListener);
+                                             ^
+  symbol:   class Nullable
+  location: interface CaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupport.java:24: error: cannot find symbol
+            @IntRange(
+             ^
+  symbol:   class IntRange
+  location: interface CaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupport.java:53: error: cannot find symbol
+    void solved(@Nullable IntentExtraSetter extraSetter);
+                 ^
+  symbol:   class Nullable
+  location: interface CaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/CaptchaLauncher.java:18: error: cannot find symbol
+    CaptchaLauncher callbackIntentCreator(@NonNull CallbackIntentCreator callbackIntentCreator);
+                                           ^
+  symbol:   class NonNull
+  location: interface CaptchaLauncher
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/CaptchaLauncher.java:21: error: cannot find symbol
+    CaptchaLauncher extraSetter(@NonNull IntentExtraSetter intentExtraSetter);
+                                 ^
+  symbol:   class NonNull
+  location: interface CaptchaLauncher
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/CaptchaLauncher.java:24: error: cannot find symbol
+    void start(@NonNull CaptchaInfo captchaInfo);
+                ^
+  symbol:   class NonNull
+  location: interface CaptchaLauncher
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/CaptchaLauncher.java:27: error: cannot find symbol
+    Intent prepareIntent(@NonNull CaptchaInfo captchaInfo);
+                          ^
+  symbol:   class NonNull
+  location: interface CaptchaLauncher
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/launcher/CaptchaLauncher.java:26: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaLauncher
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaInfo.java:32: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaInfo
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaInfo.java:35: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaInfo
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaInfo.java:38: error: cannot find symbol
+    @Nullable
+     ^
+  symbol:   class Nullable
+  location: interface CaptchaInfo
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaInfo.java:44: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaInfo
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/intent/CallbackIntentCreator.java:11: error: cannot find symbol
+    Intent createSolvedIntent(@NonNull Context context, @SleepOperation String operation);
+                               ^
+  symbol:   class NonNull
+  location: interface CallbackIntentCreator
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/intent/CallbackIntentCreator.java:12: error: cannot find symbol
+    Intent createUnsolvedIntent(@NonNull Context context, @SleepOperation String operation);
+                                 ^
+  symbol:   class NonNull
+  location: interface CallbackIntentCreator
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:13: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaFinder
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:17: error: cannot find symbol
+    List<CaptchaInfo> lookup(@Nullable CaptchaInfoFilter filter);
+                              ^
+  symbol:   class Nullable
+  location: interface CaptchaFinder
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:16: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaFinder
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:19: error: cannot find symbol
+    @Nullable
+     ^
+  symbol:   class Nullable
+  location: interface CaptchaFinder
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:23: error: cannot find symbol
+    List<CaptchaGroup> findGroups(@Nullable CaptchaInfoFilter filter);
+                                   ^
+  symbol:   class Nullable
+  location: interface CaptchaFinder
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaFinder.java:22: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaFinder
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaGroup.java:9: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaGroup
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaGroup.java:12: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaGroup
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaGroup.java:15: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: interface CaptchaGroup
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/domain/CaptchaGroup.java:18: error: cannot find symbol
+    CaptchaGroup add(@NonNull CaptchaInfo captchaInfo);
+                      ^
+  symbol:   class NonNull
+  location: interface CaptchaGroup
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaInfoFilter.java:10: error: cannot find symbol
+    boolean apply(@Nullable CaptchaGroup group, @Nullable CaptchaInfo captcha);
+                   ^
+  symbol:   class Nullable
+  location: interface CaptchaInfoFilter
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/finder/CaptchaInfoFilter.java:10: error: cannot find symbol
+    boolean apply(@Nullable CaptchaGroup group, @Nullable CaptchaInfo captcha);
+                                                 ^
+  symbol:   class Nullable
+  location: interface CaptchaInfoFilter
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/intent/IntentExtraSetter.java:8: error: cannot find symbol
+    void setExtras(@NonNull Intent intent);
+                    ^
+  symbol:   class NonNull
+  location: interface IntentExtraSetter
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/BaseCaptchaSupport.java:14: error: cannot find symbol
+    protected BaseCaptchaSupport(final @NonNull Activity activity, final @NonNull Intent intent, final int aliveTimeout) {
+                                        ^
+  symbol:   class NonNull
+  location: class BaseCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/BaseCaptchaSupport.java:14: error: cannot find symbol
+    protected BaseCaptchaSupport(final @NonNull Activity activity, final @NonNull Intent intent, final int aliveTimeout) {
+                                                                          ^
+  symbol:   class NonNull
+  location: class BaseCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/BaseCaptchaSupport.java:37: error: cannot find symbol
+    public void solved(final @Nullable IntentExtraSetter extraSetter){
+                              ^
+  symbol:   class Nullable
+  location: class BaseCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/BaseCaptchaSupport.java:46: error: cannot find symbol
+    void send(final @CaptchaEvent String event, final @Nullable IntentExtraSetter extraSetter){
+                                                       ^
+  symbol:   class Nullable
+  location: class BaseCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:35: error: cannot find symbol
+    protected final @NonNull Activity activity;
+                     ^
+  symbol:   class NonNull
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:36: error: cannot find symbol
+    protected final @NonNull Context context;
+                     ^
+  symbol:   class NonNull
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:37: error: cannot find symbol
+    protected final @Nullable Intent intent;
+                     ^
+  symbol:   class Nullable
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:39: error: cannot find symbol
+    protected final @NonNull CaptchaFinder finder;
+                     ^
+  symbol:   class NonNull
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:40: error: cannot find symbol
+    protected final @NonNull CaptchaLauncher launcher;
+                     ^
+  symbol:   class NonNull
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:51: error: cannot find symbol
+    protected AbstractCaptchaSupport(final @NonNull Activity activity, final @Nullable Intent intent, int aliveTimeout) {
+                                            ^
+  symbol:   class NonNull
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:51: error: cannot find symbol
+    protected AbstractCaptchaSupport(final @NonNull Activity activity, final @Nullable Intent intent, int aliveTimeout) {
+                                                                              ^
+  symbol:   class Nullable
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:159: error: cannot find symbol
+    public CaptchaSupport setRemainingTimeListener(final @Nullable RemainingTimeListener remainingTimeListener) {
+                                                          ^
+  symbol:   class Nullable
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:217: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/AbstractCaptchaSupport.java:223: error: cannot find symbol
+    @NonNull
+     ^
+  symbol:   class NonNull
+  location: class AbstractCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/FallbackPreviewCaptchaSupport.java:28: error: cannot find symbol
+    public void solved(@Nullable IntentExtraSetter extraSetter) {
+                        ^
+  symbol:   class Nullable
+  location: class FallbackPreviewCaptchaSupport
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupportFactory.java:16: error: cannot find symbol
+    public static CaptchaSupport create(final @NonNull Activity activity) {
+                                               ^
+  symbol:   class NonNull
+  location: class CaptchaSupportFactory
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupportFactory.java:20: error: cannot find symbol
+    public static CaptchaSupport create(final @NonNull Activity activity, final @Nullable Intent intent) {
+                                               ^
+  symbol:   class NonNull
+  location: class CaptchaSupportFactory
+/home/runner/work/sleep-captcha-examples/sleep-captcha-examples/captcha-support-lib/src/main/java/com/urbandroid/sleep/captcha/CaptchaSupportFactory.java:20: error: cannot find symbol
+    public static CaptchaSupport create(final @NonNull Activity activity, final @Nullable Intent intent) {
+                                                                                 ^
+  symbol:   class Nullable
+  location: class CaptchaSupportFactory
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+100 errors
+only showing the first 100 errors, of 183 total; use -Xmaxerrs if you would like to see more
 
-      - name: Patch Gradle files and wire local library
-        shell: bash
-        run: |
-          set -euo pipefail
 
-          cat > settings.gradle <<'EOF'
-          pluginManagement {
-              repositories {
-                  google()
-                  mavenCentral()
-                  gradlePluginPortal()
-              }
-          }
+> Task :captcha-support-lib:compileDebugJavaWithJavac FAILED
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_3-1768765535859.json
+FAILURE: Build failed with an exception.
+33 actionable tasks: 33 executed
 
-          dependencyResolutionManagement {
-              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-              repositories {
-                  google()
-                  mavenCentral()
-              }
-          }
+* What went wrong:
+Execution failed for task ':captcha-support-lib:compileDebugJavaWithJavac'.
+> Compilation failed; see the compiler error output for details.
 
-          rootProject.name = "sleep-captcha-examples"
-          include(":app")
-          include(":captcha-support-lib")
-          EOF
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
 
-          cat > build.gradle <<'EOF'
-          plugins {
-              id "com.android.application" version "7.4.2" apply false
-              id "com.android.library" version "7.4.2" apply false
-          }
-          EOF
+* Get more help at https://help.gradle.org
 
-          cat > gradle.properties <<'EOF'
-          org.gradle.jvmargs=-Xmx2g -Dfile.encoding=UTF-8
-          android.useAndroidX=true
-          android.enableJetifier=true
-          EOF
-
-          mkdir -p app
-          cat > app/build.gradle <<'EOF'
-          plugins {
-              id "com.android.application"
-          }
-
-          android {
-              namespace "com.urbandroid.sleep.captcha.examples"
-              compileSdk 33
-
-              defaultConfig {
-                  applicationId "com.urbandroid.sleep.captcha.examples"
-                  minSdk 21
-                  targetSdk 30
-                  versionCode 1
-                  versionName "1.0"
-              }
-
-              buildTypes {
-                  debug {
-                      minifyEnabled false
-                  }
-                  release {
-                      minifyEnabled false
-                      proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-                  }
-              }
-
-              compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_1_8
-                  targetCompatibility JavaVersion.VERSION_1_8
-              }
-          }
-
-          dependencies {
-              implementation project(":captcha-support-lib")
-          }
-          EOF
-
-          mkdir -p captcha-support-lib/src/main
-
-          cat > captcha-support-lib/build.gradle <<'EOF'
-          plugins {
-              id "com.android.library"
-          }
-
-          android {
-              namespace "com.urbandroid.sleep.captcha"
-              compileSdk 33
-
-              defaultConfig {
-                  minSdk 14
-                  targetSdk 30
-              }
-
-              compileOptions {
-                  sourceCompatibility JavaVersion.VERSION_1_8
-                  targetCompatibility JavaVersion.VERSION_1_8
-              }
-          }
-
-          dependencies {
-              // дает android.support.annotation.* (IntDef/StringDef/NonNull/Nullable/CallSuper и т.д.)
-              compileOnly "com.android.support:support-annotations:28.0.0"
-          }
-          EOF
-
-          SRC_JAVA_FILE="$(find captcha-lib-src -type f -name 'CaptchaSupport.java' | head -n 1 || true)"
-          if [ -z "$SRC_JAVA_FILE" ]; then
-            echo "ERROR: CaptchaSupport.java not found in cloned library" >&2
-            exit 1
-          fi
-
-          SRC_MAIN_DIR="$(echo "$SRC_JAVA_FILE" | sed 's|\(.*\/src\/main\).*|\1|')"
-          if [ ! -d "$SRC_MAIN_DIR" ]; then
-            echo "ERROR: computed src/main dir not found: $SRC_MAIN_DIR" >&2
-            exit 1
-          fi
-
-          echo "Using library src/main from: $SRC_MAIN_DIR"
-          cp -R "$SRC_MAIN_DIR"/* captcha-support-lib/src/main/
-
-      - name: Build debug APK
-        run: gradle --no-daemon assembleDebug
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-apk
-          if-no-files-found: error
-          path: |
-            **/build/outputs/apk/**/debug/*.apk
-            **/build/outputs/apk/debug/*.apk
+BUILD FAILED in 19s
+Error: Process completed with exit code 1.
