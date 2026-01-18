@@ -1,16 +1,18 @@
-<resources xmlns:xliff="http://schemas.android.com/tools">
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Reverse Captcha</string>
     <string name="captcha_label">@string/app_name</string>
-    <string name="done_button">Done</string>
-    <string name="difficulty">Difficulty <xliff:g id="till">%s</xliff:g></string>
-    <string name="captcha_math_label">Hard math CAPTCHA</string>
-    <string name="question_title">Задача</string>
-    <string name="answer_hint">Ответ (целое число)</string>
-    <string name="check_answer">Проверить</string>
-    
-    <string name="err_enter_answer">Введи ответ</string>
-    <string name="err_integers_only">Только целые числа</string>
-    <string name="err_wrong_new">Неверно, новая задача</string>
-    <string name="ok_correct">Верно</string>
 
+    <string name="done_button">Done</string>
+    <string name="difficulty">Difficulty: <xliff:g id="till">%1$d</xliff:g></string>
+
+    <string name="captcha_math_label">Hard math CAPTCHA</string>
+    <string name="question_title">Solve:</string>
+    <string name="answer_hint">Enter integer answer</string>
+    <string name="check_answer">Check</string>
+
+    <string name="err_enter_answer">Enter an answer</string>
+    <string name="err_integers_only">Integers only</string>
+    <string name="err_wrong_new">Wrong, new problem</string>
+    <string name="ok_correct">Correct</string>
 </resources>
