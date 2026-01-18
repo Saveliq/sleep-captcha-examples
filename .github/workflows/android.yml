@@ -1,4 +1,4 @@
-name: Build Debug APK (FINAL AndroidX patch)
+name: Build Debug APK (WORKING FINAL)
 
 on:
   workflow_dispatch:
@@ -29,20 +29,15 @@ jobs:
         with:
           gradle-version: "7.6.4"
 
-      - name: Clone library
+      - name: Build (patch everything on the fly)
         shell: bash
         run: |
           set -euo pipefail
+
+          # -------- clone captcha-support sources --------
           git clone --depth 1 https://github.com/urbandroid-team/sleep-captcha-support.git captcha-lib-src
 
-      - name: Patch project + build
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          # --------------------
-          # Gradle settings
-          # --------------------
+          # -------- Gradle: settings/root --------
           cat > settings.gradle <<'EOF'
           pluginManagement {
               repositories {
@@ -78,21 +73,18 @@ jobs:
           android.enableJetifier=true
           EOF
 
-          # --------------------
-          # App module
-          # --------------------
-          mkdir -p app
+          # -------- app/build.gradle (IMPORTANT: namespace = manifest package) --------
           cat > app/build.gradle <<'EOF'
           plugins {
               id "com.android.application"
           }
 
           android {
-              namespace "com.urbandroid.sleep.captcha.examples"
+              namespace "com.urbandroid.sleep.captcha.example"
               compileSdk 33
 
               defaultConfig {
-                  applicationId "com.urbandroid.sleep.captcha.examples"
+                  applicationId "com.urbandroid.sleep.captcha.example"
                   minSdk 21
                   targetSdk 30
                   versionCode 1
@@ -118,9 +110,7 @@ jobs:
           }
           EOF
 
-          # --------------------
-          # Local library module
-          # --------------------
+          # -------- create local library module --------
           mkdir -p captcha-support-lib/src/main
           cat > captcha-support-lib/build.gradle <<'EOF'
           plugins {
@@ -143,43 +133,37 @@ jobs:
           }
 
           dependencies {
-              // AndroidX annotations replacement for old android.support.annotation.*
               api "androidx.annotation:annotation:1.9.1"
           }
           EOF
 
-          # --------------------
-          # Copy upstream src/main into module
-          # --------------------
+          # copy upstream src/main into our module
           SRC_JAVA_FILE="$(find captcha-lib-src -type f -name 'CaptchaSupport.java' | head -n 1 || true)"
           if [ -z "$SRC_JAVA_FILE" ]; then
             echo "ERROR: CaptchaSupport.java not found in cloned library" >&2
             exit 1
           fi
-
           SRC_MAIN_DIR="$(echo "$SRC_JAVA_FILE" | sed 's|\(.*\/src\/main\).*|\1|')"
-          if [ ! -d "$SRC_MAIN_DIR" ]; then
-            echo "ERROR: computed src/main dir not found: $SRC_MAIN_DIR" >&2
-            exit 1
-          fi
-
           cp -R "$SRC_MAIN_DIR"/* captcha-support-lib/src/main/
 
-          # --------------------
-          # AndroidX migrate: replace imports
-          # --------------------
-          if [ -d "captcha-support-lib/src/main/java" ]; then
-            FILES="$(grep -RIl --include='*.java' 'android\.support\.annotation' captcha-support-lib/src/main/java || true)"
-            if [ -n "$FILES" ]; then
-              echo "$FILES" | while read -r f; do
-                sed -i 's/android\.support\.annotation/androidx.annotation/g' "$f"
-              done
-            fi
+          # migrate library annotations imports: android.support.annotation.* -> androidx.annotation.*
+          LIB_FILES="$(grep -RIl --include='*.java' 'android\.support\.annotation' captcha-support-lib/src/main/java || true)"
+          if [ -n "$LIB_FILES" ]; then
+            echo "$LIB_FILES" | while read -r f; do
+              sed -i 's/android\.support\.annotation/androidx.annotation/g' "$f"
+            done
           fi
 
-          # --------------------
-          # Build
-          # --------------------
+          # -------- FIX YOUR APP PACKAGE (R class is generated in namespace package) --------
+          # if any of your custom activities were created in "...captcha.examples", compile will fail
+          APP_FILES="$(find app/src/main/java -type f -name '*.java' || true)"
+          if [ -n "$APP_FILES" ]; then
+            echo "$APP_FILES" | while read -r f; do
+              sed -i 's/^package com\.urbandroid\.sleep\.captcha\.examples;/package com.urbandroid.sleep.captcha.example;/' "$f"
+            done
+          fi
+
+          # -------- build --------
           gradle --no-daemon assembleDebug
 
       - name: Upload APK
