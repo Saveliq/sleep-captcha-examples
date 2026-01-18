@@ -1,4 +1,4 @@
-name: Build Debug APK (with local captcha-support)
+name: Build Debug APK (final + support-annotations)
 
 on:
   workflow_dispatch:
@@ -40,7 +40,6 @@ jobs:
         run: |
           set -euo pipefail
 
-          # ----- settings.gradle -----
           cat > settings.gradle <<'EOF'
           pluginManagement {
               repositories {
@@ -63,7 +62,6 @@ jobs:
           include(":captcha-support-lib")
           EOF
 
-          # ----- root build.gradle -----
           cat > build.gradle <<'EOF'
           plugins {
               id "com.android.application" version "7.4.2" apply false
@@ -71,14 +69,12 @@ jobs:
           }
           EOF
 
-          # ----- gradle.properties -----
           cat > gradle.properties <<'EOF'
           org.gradle.jvmargs=-Xmx2g -Dfile.encoding=UTF-8
           android.useAndroidX=true
           android.enableJetifier=true
           EOF
 
-          # ----- app/build.gradle -----
           mkdir -p app
           cat > app/build.gradle <<'EOF'
           plugins {
@@ -118,7 +114,6 @@ jobs:
           }
           EOF
 
-          # ----- captcha-support-lib module -----
           mkdir -p captcha-support-lib/src/main
 
           cat > captcha-support-lib/build.gradle <<'EOF'
@@ -142,10 +137,11 @@ jobs:
           }
 
           dependencies {
+              // дает android.support.annotation.* (IntDef/StringDef/NonNull/Nullable/CallSuper и т.д.)
+              compileOnly "com.android.support:support-annotations:28.0.0"
           }
           EOF
 
-          # найти src/main в клонированной библиотеке и скопировать в модуль
           SRC_JAVA_FILE="$(find captcha-lib-src -type f -name 'CaptchaSupport.java' | head -n 1 || true)"
           if [ -z "$SRC_JAVA_FILE" ]; then
             echo "ERROR: CaptchaSupport.java not found in cloned library" >&2
