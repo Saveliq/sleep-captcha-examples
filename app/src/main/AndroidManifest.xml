@@ -19,14 +19,12 @@
                 android:value="true" />
 
             <intent-filter>
-                <!-- mandatory: иначе Sleep не найдёт капчу -->
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
-                <!-- важно для implicit intent -->
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <!-- REVERSE CAPTCHA (твой ReverseCaptchaActivity) -->
+        <!-- REVERSE CAPTCHA -->
         <activity
             android:name=".ReverseCaptchaActivity"
             android:exported="true"
