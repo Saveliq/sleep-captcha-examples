@@ -7,7 +7,6 @@
         android:allowBackup="true"
         android:label="@string/app_name">
 
-        <!-- HARD MATH CAPTCHA -->
         <activity
             android:name=".HardMathCaptchaActivity"
             android:exported="true"
@@ -18,14 +17,19 @@
                 android:name="com.urbandroid.sleep.captcha.meta.has_difficulty"
                 android:value="true" />
 
-            <!-- ВАЖНО: как в оригинальной библиотеке — только action OPEN -->
+            <!-- 1) OPEN without categories -->
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
             </intent-filter>
 
+            <!-- 2) OPEN with DEFAULT category -->
+            <intent-filter>
+                <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
         </activity>
 
-        <!-- REVERSE CAPTCHA -->
         <activity
             android:name=".ReverseCaptchaActivity"
             android:exported="true"
@@ -36,12 +40,18 @@
                 android:name="com.urbandroid.sleep.captcha.meta.has_difficulty"
                 android:value="true" />
 
+            <!-- 1) OPEN without categories -->
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
+            </intent-filter>
+
+            <!-- 2) OPEN with DEFAULT category -->
+            <intent-filter>
+                <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
         </activity>
 
     </application>
-
 </manifest>
