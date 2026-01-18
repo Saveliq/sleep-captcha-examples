@@ -1,4 +1,4 @@
-name: Build Debug APK (final)
+name: Build Debug APK (with local captcha-support)
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Setup Java 17
@@ -29,11 +29,18 @@ jobs:
         with:
           gradle-version: "7.6.4"
 
-      - name: Patch Gradle files (remove jcenter, modern AGP)
+      - name: Clone sleep-captcha-support sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone https://github.com/urbandroid-team/sleep-captcha-support.git captcha-lib-src
+
+      - name: Patch Gradle files and wire local library
         shell: bash
         run: |
           set -euo pipefail
 
+          # ----- settings.gradle -----
           cat > settings.gradle <<'EOF'
           pluginManagement {
               repositories {
@@ -53,20 +60,25 @@ jobs:
 
           rootProject.name = "sleep-captcha-examples"
           include(":app")
+          include(":captcha-support-lib")
           EOF
 
+          # ----- root build.gradle -----
           cat > build.gradle <<'EOF'
           plugins {
               id "com.android.application" version "7.4.2" apply false
+              id "com.android.library" version "7.4.2" apply false
           }
           EOF
 
+          # ----- gradle.properties -----
           cat > gradle.properties <<'EOF'
           org.gradle.jvmargs=-Xmx2g -Dfile.encoding=UTF-8
           android.useAndroidX=true
           android.enableJetifier=true
           EOF
 
+          # ----- app/build.gradle -----
           mkdir -p app
           cat > app/build.gradle <<'EOF'
           plugins {
@@ -75,12 +87,12 @@ jobs:
 
           android {
               namespace "com.urbandroid.sleep.captcha.examples"
-              compileSdk 34
+              compileSdk 33
 
               defaultConfig {
                   applicationId "com.urbandroid.sleep.captcha.examples"
                   minSdk 21
-                  targetSdk 34
+                  targetSdk 30
                   versionCode 1
                   versionName "1.0"
               }
@@ -102,9 +114,52 @@ jobs:
           }
 
           dependencies {
-              implementation "com.urbandroid.sleep:captcha-support:0.3.3"
+              implementation project(":captcha-support-lib")
           }
           EOF
+
+          # ----- captcha-support-lib module -----
+          mkdir -p captcha-support-lib/src/main
+
+          cat > captcha-support-lib/build.gradle <<'EOF'
+          plugins {
+              id "com.android.library"
+          }
+
+          android {
+              namespace "com.urbandroid.sleep.captcha"
+              compileSdk 33
+
+              defaultConfig {
+                  minSdk 14
+                  targetSdk 30
+              }
+
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_1_8
+                  targetCompatibility JavaVersion.VERSION_1_8
+              }
+          }
+
+          dependencies {
+          }
+          EOF
+
+          # найти src/main в клонированной библиотеке и скопировать в модуль
+          SRC_JAVA_FILE="$(find captcha-lib-src -type f -name 'CaptchaSupport.java' | head -n 1 || true)"
+          if [ -z "$SRC_JAVA_FILE" ]; then
+            echo "ERROR: CaptchaSupport.java not found in cloned library" >&2
+            exit 1
+          fi
+
+          SRC_MAIN_DIR="$(echo "$SRC_JAVA_FILE" | sed 's|\(.*\/src\/main\).*|\1|')"
+          if [ ! -d "$SRC_MAIN_DIR" ]; then
+            echo "ERROR: computed src/main dir not found: $SRC_MAIN_DIR" >&2
+            exit 1
+          fi
+
+          echo "Using library src/main from: $SRC_MAIN_DIR"
+          cp -R "$SRC_MAIN_DIR"/* captcha-support-lib/src/main/
 
       - name: Build debug APK
         run: gradle --no-daemon assembleDebug
