@@ -1,4 +1,4 @@
-name: Build Debug APK (working)
+name: Build Debug APK (FINAL WORKING)
 
 on:
   workflow_dispatch:
@@ -94,6 +94,7 @@ jobs:
           }
           dependencies {
               implementation project(":captcha-support-lib")
+              implementation "com.android.support:support-annotations:28.0.0"
           }
           EOF
 
@@ -115,7 +116,7 @@ jobs:
               }
           }
           dependencies {
-              implementation "com.android.support:support-annotations:28.0.0"
+              api "com.android.support:support-annotations:28.0.0"
           }
           EOF
 
