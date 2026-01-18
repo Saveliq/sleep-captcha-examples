@@ -8,29 +8,6 @@
         android:label="@string/app_name">
 
         <activity
-            android:name=".HardMathCaptchaActivity"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:label="@string/captcha_math_label">
-
-            <meta-data
-                android:name="com.urbandroid.sleep.captcha.meta.has_difficulty"
-                android:value="true" />
-
-            <!-- 1) OPEN without categories -->
-            <intent-filter>
-                <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
-            </intent-filter>
-
-            <!-- 2) OPEN with DEFAULT category -->
-            <intent-filter>
-                <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-
-        </activity>
-
-        <activity
             android:name=".ReverseCaptchaActivity"
             android:exported="true"
             android:launchMode="singleTop"
@@ -40,12 +17,31 @@
                 android:name="com.urbandroid.sleep.captcha.meta.has_difficulty"
                 android:value="true" />
 
-            <!-- 1) OPEN without categories -->
+            <meta-data
+                android:name="com.urbandroid.sleep.captcha.meta.order"
+                android:value="1" />
+
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
-            <!-- 2) OPEN with DEFAULT category -->
+        </activity>
+
+        <activity
+            android:name=".HardMathCaptchaActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:label="@string/captcha_math_label">
+
+            <meta-data
+                android:name="com.urbandroid.sleep.captcha.meta.has_difficulty"
+                android:value="true" />
+
+            <meta-data
+                android:name="com.urbandroid.sleep.captcha.meta.order"
+                android:value="2" />
+
             <intent-filter>
                 <action android:name="com.urbandroid.sleep.captcha.intent.action.OPEN" />
                 <category android:name="android.intent.category.DEFAULT" />
